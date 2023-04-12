@@ -13,8 +13,12 @@ class UrlsController < ApplicationController
     end
 
     def show
-        url = Url.find_by(slug: params[:slug]).target_url
-        redirect_to url
+        url = Url.find_by(slug: params[:slug])
+        if url.nil?
+            render json: {"message": "Not found"}, status: :not_found
+        else
+        redirect_to url.target_url
+        end
     end
     
 end
