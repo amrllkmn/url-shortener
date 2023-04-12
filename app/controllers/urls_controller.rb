@@ -12,5 +12,10 @@ class UrlsController < ApplicationController
         end
     end
 
+    def show
+        url = Url.find_by(slug: params[:slug]).target_url
+        puts url
+        redirect_to "https://#{url}"
+    end
     
 end
