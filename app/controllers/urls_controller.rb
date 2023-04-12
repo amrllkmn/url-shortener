@@ -5,11 +5,12 @@ class UrlsController < ApplicationController
 
     def shorten
         @url = params[:url]
-        if @url and @url.length > 0
-            render json: {"message": "Created"}, status: :created
-        else
-            render json: {"message": "No empty URLs"}, status: :unprocessable_entity
+        @slug = params[:slug]
+        @created_url = Url.shorten_url(@url, @slug, request.host_with_port)
+        if @created_url.nil?
+            render json: {"message": "Something went wrong"}, status: :internal_error
         end
+        render json: {"message": "Created", "short_url": @created_url}, status: :created
     end
 
     def show
