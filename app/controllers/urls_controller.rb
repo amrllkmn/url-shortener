@@ -1,4 +1,5 @@
 class UrlsController < ApplicationController
+    before_action :validate_url, only: [:shorten]
     def index
         render json: {"message": "Hello World!"}, status: :ok
     end
@@ -39,6 +40,16 @@ class UrlsController < ApplicationController
             return "14.192.212.14"
         end
         request.ip
-    end 
+    end
+
+    def validate_url
+        if params[:url].empty?
+            render json: {"message": "url cannot be empty"}, status: :unprocessable_entity
+        end
+
+        if !params[:url].start_with?("http", "https")
+            render json: {"message": "url invalid, must be provided with https://" }
+        end
+    end
     
 end
