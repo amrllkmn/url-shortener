@@ -22,4 +22,48 @@ class Url < ApplicationRecord
 
         Url.shorten(url, slug+SecureRandom.uuid[0..5], request_url)
     end
+
+    def self.update_url(slug, geolocation)
+        begin            
+            current_time = Time.now.strftime("%Y-%m-%d %H:%M:%S %z")
+            url = Url.find_by(slug: slug)
+            if url
+                url.times_clicked += 1
+                updated_timestamp = JSON.parse(url.click_timestamp)
+                updated_timestamp[url.times_clicked] = current_time
+                updated_timestamp = JSON.generate(updated_timestamp)
+    
+                updated_origin = JSON.parse(url.origin)
+                updated_origin.append(geolocation)
+                updated_origin = JSON.generate(updated_origin)
+    
+                url.click_timestamp = updated_timestamp
+                url.origin = updated_origin
+    
+                return url if url.save
+            end
+        rescue ActiveRecord::RecordNotFound
+            return nil
+        end
+    end
+
+    def self.get_report(id)
+        begin            
+            url = Url.find(id)
+            if url
+                data = {}
+                url.attributes.each do |attr, value|
+                    key = attr.to_s
+                    if key == "click_timestamp" or key == "origin"
+                        data[key] = JSON.parse(value)
+                    else
+                        data[key] = value
+                    end
+                end
+                return data
+            end
+        rescue ActiveRecord::RecordNotFound
+            return nil
+        end
+    end
 end
