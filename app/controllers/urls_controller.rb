@@ -23,6 +23,15 @@ class UrlsController < ApplicationController
         end
     end
 
+    def single_report
+        url = Url.find(params[:id])
+        if url.nil?
+            render json: {"message": "Not found"}, status: :not_found
+        else
+            render json: {data: url}, status: :ok
+        end
+    end
+
     private
 
     def client_ip
