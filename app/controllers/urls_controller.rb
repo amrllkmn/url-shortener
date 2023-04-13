@@ -48,7 +48,7 @@ class UrlsController < ApplicationController
         end
 
         if !params[:url].start_with?("http", "https")
-            render json: {"message": "url invalid, must be provided with https://" }
+            render json: {"message": "url invalid, must be provided with https://" }, status: :unprocessable_entity
         end
     end
     
