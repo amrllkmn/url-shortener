@@ -14,13 +14,12 @@ class UrlsController < ApplicationController
     end
 
     def show
-        url = Url.find_by(slug: params[:slug])
-        response_body = AbstractApi.get_location(client_ip).body
-        puts response_body
+        geolocation = AbstractApi.get_location(client_ip).body
+        url = Url.update_url(params[:slug], geolocation)
         if url.nil?
             render json: {"message": "Not found"}, status: :not_found
         else
-        redirect_to url.target_url
+            redirect_to url.target_url
         end
     end
 

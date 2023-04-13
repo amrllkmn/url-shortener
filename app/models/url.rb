@@ -22,4 +22,24 @@ class Url < ApplicationRecord
 
         Url.shorten(url, slug+SecureRandom.uuid[0..5], request_url)
     end
+
+    def self.update_url(slug, geolocation)
+        current_time = Time.now.strftime("%Y-%m-%d %H:%M:%S %z")
+        url = Url.find_by(slug: slug)
+        if url
+            url.times_clicked += 1
+            updated_timestamp = JSON.parse(url.click_timestamp)
+            updated_timestamp[url.times_clicked] = current_time
+            updated_timestamp = JSON.generate(updated_timestamp)
+
+            updated_origin = JSON.parse(url.origin)
+            updated_origin.append(geolocation)
+            updated_origin = JSON.generate(updated_origin)
+
+            url.click_timestamp = updated_timestamp
+            url.origin = updated_origin
+
+            return url if url.save
+        end
+    end
 end
