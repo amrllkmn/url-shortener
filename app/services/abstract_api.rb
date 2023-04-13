@@ -12,9 +12,7 @@ class AbstractApi
         request =  Net::HTTP::Get.new(uri)
 
         response = http.request(request)
-        puts "Status code: #{ response.code }"
-        puts "Response body: #{ response.body }"
-        return response
+        return JSON.parse(response.body)
     rescue StandardError => error
         puts error
         puts "Error (#{ error.message })"
