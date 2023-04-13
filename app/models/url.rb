@@ -14,9 +14,9 @@ class Url < ApplicationRecord
         return "#{request_url}/urls/#{link.slug}" if link
         
         link = Url.new(target_url: url, slug: slug)
-        return "#{request_url}/urls/#{link.slug}" if link
+        return "#{request_url}/urls/#{link.slug}" if link.save
         
-        Url.shorten_url(url, slug+SecureRandom.uuid[0..5], request_url)
+        Url.shorten_url(url, slug+SecureRandom.uuid[0..2], request_url)
     end
 
     def self.update_url(slug, geolocation)
