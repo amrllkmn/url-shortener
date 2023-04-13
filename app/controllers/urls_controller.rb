@@ -15,11 +15,22 @@ class UrlsController < ApplicationController
 
     def show
         url = Url.find_by(slug: params[:slug])
+        response_body = AbstractApi.get_location(client_ip).body
+        puts response_body
         if url.nil?
             render json: {"message": "Not found"}, status: :not_found
         else
         redirect_to url.target_url
         end
     end
+
+    private
+
+    def client_ip
+        if request.ip == "::1"
+            return "14.192.212.14"
+        end
+        request.ip
+    end 
     
 end
