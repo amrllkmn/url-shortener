@@ -7,7 +7,7 @@ class UrlsController < ApplicationController
     def shorten
         @url = params[:url]
         @slug = params[:slug]
-        @created_url = Url.shorten_url(@url, @slug, request.host_with_port)
+        @created_url = Url.shorten_url(@url, @slug)
         if @created_url.nil?
             render json: {"message": "Something went wrong"}, status: :internal_server_error and return
         end
