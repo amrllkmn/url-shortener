@@ -31,11 +31,14 @@ class UrlsControllerTest < ActionDispatch::IntegrationTest
 
     test "get #show should be redirected to target_url" do
         fake_location = {"city": "KL", "region": "KL", "country": "MY"}
+        mockAbstract = Minitest::Mock.new
+        mockAbstract.expect(:call, fake_location,["127.0.0.1"])
         url = Url.find(1)
-        AbstractApi.stub :get_location, fake_location do
+        AbstractApi.stub :get_location, mockAbstract do
             get "/#{url.slug}"
             assert_redirected_to url.target_url
         end
+        mockAbstract.verify
     end
 
     test "get #show should return 404 if url is nil" do
