@@ -33,7 +33,7 @@ class UrlsControllerTest < ActionDispatch::IntegrationTest
         fake_location = {"city": "KL", "region": "KL", "country": "MY"}
         url = Url.find(1)
         AbstractApi.stub :get_location, fake_location do
-            get "/urls/#{url.slug}"
+            get "/#{url.slug}"
             assert_redirected_to url.target_url
         end
     end
@@ -45,7 +45,7 @@ class UrlsControllerTest < ActionDispatch::IntegrationTest
         url = Url.find(1)
         AbstractApi.stub :get_location, mockAbstract do
             Url.stub :update_url, nil do
-                get "/urls/#{url.slug}"
+                get "/#{url.slug}"
                 assert_response :not_found
             end
         end
@@ -54,12 +54,12 @@ class UrlsControllerTest < ActionDispatch::IntegrationTest
 
     test "get #single_report should return success" do
         url = Url.find(1)
-        get "/urls/#{url.id}/report"
+        get "/#{url.id}/report"
         assert_response :success
     end
 
     test "get #single_report should return 404 if not found" do
-        get "/urls/3/report" # ID 3 doesn't exist
+        get "/3/report" # ID 3 doesn't exist
         assert_response :not_found
     end
 end

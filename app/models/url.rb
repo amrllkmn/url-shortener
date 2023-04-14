@@ -11,10 +11,10 @@ class Url < ApplicationRecord
 
     def self.shorten_url(url, slug= '', request_url)
         link = Url.where(target_url: url, slug: slug).first
-        return "#{request_url}/urls/#{link.slug}" if link
+        return "#{request_url}/#{link.slug}" if link
         
         link = Url.new(target_url: url, slug: slug)
-        return "#{request_url}/urls/#{link.slug}" if link.save
+        return "#{request_url}/#{link.slug}" if link.save
         
         Url.shorten_url(url, slug+SecureRandom.uuid[0..2], request_url)
     end
