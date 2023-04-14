@@ -47,19 +47,26 @@ class Url < ApplicationRecord
         begin            
             url = Url.find(id)
             if url
-                data = {}
-                url.attributes.each do |attr, value|
-                    key = attr.to_s
-                    if key == "click_timestamp" or key == "origin"
-                        data[key] = JSON.parse(value)
-                    else
-                        data[key] = value
-                    end
-                end
+                data = self.process_data(url)
                 return data
             end
         rescue ActiveRecord::RecordNotFound
             return nil
         end
+    end
+
+    private
+
+    def self.process_data(url)
+        data = {}
+        url.attributes.each do |attr, value|
+            key = attr.to_s
+            if key == "click_timestamp" or key == "origin"
+                data[key] = JSON.parse(value)
+            else
+                data[key] = value
+            end
+        end
+        return data
     end
 end
