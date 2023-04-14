@@ -1,20 +1,20 @@
 import "../App.css";
-import "axios";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Item from "./Item";
 
 function List() {
-  const [list, setList] = useState();
+  const [list, setList] = useState(null);
 
   useEffect(() => {
     const loadList = async () => {
       const { data: response } = await axios.get("/urls/analytics");
       setList(response.data);
     };
-    loadList().catch((e) => console.error(e));
-  }, [list]);
-
+    if (!list) {
+      loadList().catch((e) => console.error(e));
+    }
+  }, [list, setList]);
   return (
     <div>
       {list &&
