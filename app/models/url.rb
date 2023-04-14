@@ -55,6 +55,16 @@ class Url < ApplicationRecord
         end
     end
 
+    def self.all_urls_report
+        urls = Url.all()
+        data = []
+        urls.each do |url|
+            processed_data = process_data(url)
+            data.append(processed_data)
+        end
+        return data
+    end
+
     private
 
     def self.process_data(url)

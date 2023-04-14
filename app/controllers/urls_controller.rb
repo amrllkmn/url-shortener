@@ -34,6 +34,11 @@ class UrlsController < ApplicationController
         end
     end
 
+    def analytics
+        @data = Url.all_urls_report()
+        render json: {data: @data}, status: :ok
+    end
+
     private
 
     def client_ip
