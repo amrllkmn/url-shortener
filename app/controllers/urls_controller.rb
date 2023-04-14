@@ -9,18 +9,19 @@ class UrlsController < ApplicationController
         @slug = params[:slug]
         @created_url = Url.shorten_url(@url, @slug, request.host_with_port)
         if @created_url.nil?
-            render json: {"message": "Something went wrong"}, status: :internal_error
+            render json: {"message": "Something went wrong"}, status: :internal_server_error and return
         end
-        render json: {"message": "Created", "short_url": @created_url}, status: :created
+        render json: {"message": "Created", "short_url": @created_url}, status: :created and return
     end
 
     def show
         geolocation = AbstractApi.get_location(client_ip)
         @url = Url.update_url(params[:slug], geolocation)
         if @url.nil?
-            render json: {"message": "Not found"}, status: :not_found
+            render json: {"message": "Not found"}, status: :not_found and return
         else
             redirect_to @url.target_url
+            return
         end
     end
 
@@ -43,13 +44,15 @@ class UrlsController < ApplicationController
     end
 
     def validate_url
+        resp = {}
         if params[:url].empty?
-            render json: {"message": "url cannot be empty"}, status: :unprocessable_entity
+            resp["message"] = "url cannot be empty"
         end
 
         if !params[:url].start_with?("http", "https")
-            render json: {"message": "url invalid, must be provided with https://" }, status: :unprocessable_entity
+            resp["message"] = "url invalid, must be provided with https://"
         end
+        render json: resp, status: :unprocessable_entity if !resp["message"].nil?
     end
     
 end
