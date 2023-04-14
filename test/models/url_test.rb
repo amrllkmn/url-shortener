@@ -29,20 +29,20 @@ class UrlTest < ActiveSupport::TestCase
 
 
   test "shorten_url should return a string url" do
-    url = Url.shorten_url("https://google.com","","test.com")
+    url = Url.shorten_url("https://google.com")
     assert_not_empty url
   end
 
   test "shorten_url should return url with existing slug" do
     url_1_slug = Url.find(1).slug
-    new_url = Url.shorten_url("https://google.com", url_1_slug, "test.com")
+    new_url = Url.shorten_url("https://google.com", url_1_slug)
     new_slug = new_url.split("/")[-1]
     assert_equal(Url.find_by(slug: new_slug).target_url,"https://google.com")
   end
 
   test "shorten_url should add character if with non-unique slug" do
     url_1_slug = Url.find(1).slug
-    new_url = Url.shorten_url("https://youtube.com", url_1_slug, "test.com")
+    new_url = Url.shorten_url("https://youtube.com", url_1_slug)
     new_slug = new_url.split("/")[-1]
     assert_not_equal(new_slug, url_1_slug)
   end
