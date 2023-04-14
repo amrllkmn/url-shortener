@@ -9,14 +9,14 @@ class Url < ApplicationRecord
         true
     end
 
-    def self.shorten_url(url, slug= '', request_url)
+    def self.shorten_url(url, slug= '')
         link = Url.where(target_url: url, slug: slug).first
-        return "#{request_url}/#{link.slug}" if link
+        return "#{ENV["HOST_URL"]}/#{link.slug}" if link
         
         link = Url.new(target_url: url, slug: slug)
-        return "#{request_url}/#{link.slug}" if link.save
+        return "#{ENV["HOST_URL"]}/#{link.slug}" if link.save
         
-        Url.shorten_url(url, slug+SecureRandom.uuid[0..2], request_url)
+        Url.shorten_url(url, slug+SecureRandom.uuid[0..2])
     end
 
     def self.update_url(slug, geolocation)
@@ -77,6 +77,7 @@ class Url < ApplicationRecord
                 data[key] = value
             end
         end
+        data["short_url"] = "#{ENV["HOST_URL"]}/#{url.slug}"
         return data
     end
 end
