@@ -62,4 +62,9 @@ class UrlsControllerTest < ActionDispatch::IntegrationTest
         get "/3/report" # ID 3 doesn't exist
         assert_response :not_found
     end
+
+    test "get #analytics should return 200" do
+        get "/urls/analytics"
+        assert_response :success
+    end
 end
