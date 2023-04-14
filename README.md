@@ -2,6 +2,8 @@
 
 This is the URL Shortener API, offering these endpoints:
 
+### Endpoints
+
 1. `POST /shorten`
    - Request body:
    ```json
@@ -60,3 +62,28 @@ This is the URL Shortener API, offering these endpoints:
          ...
          ]
      ```
+
+### Setup
+
+1. Use ruby 2.7.5 for this app.
+2. Run `bundle install`.
+3. Create an application.yml, with these values:
+
+   - DB_USERNAME: YOUR_USERNAME
+   - DB_PASSWORD: YOUR_PASSWORD
+   - ABSTRACT_API_KEY: YOUR_ABSTRACT_API_KEY
+   - HOST_URL: http://localhost:3000
+
+     The ABSTRACT_API_KEY is created by signing up Abstract's Geolocation API (no need input any cards, just sign up and you get the key)
+
+4. If you're using a Docker database (through running `docker-compose up`), comment the username like this on `database.yml`:
+   ```yml
+   default: &default
+   adapter: postgresql
+   encoding: unicode
+   host: localhost
+   # username: <%= ENV["DB_USERNAME"] %>
+   ```
+5. Run `rails db:create db:migrate`
+
+6. Run `rails s`
