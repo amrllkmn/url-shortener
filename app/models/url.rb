@@ -11,10 +11,10 @@ class Url < ApplicationRecord
 
     def self.shorten_url(url, slug= '', request_url)
         link = Url.where(target_url: url, slug: slug).first
-        return "#{request_url}/urls/#{link.slug}" if link
+        return "#{request_url}/#{link.slug}" if link
         
         link = Url.new(target_url: url, slug: slug)
-        return "#{request_url}/urls/#{link.slug}" if link.save
+        return "#{request_url}/#{link.slug}" if link.save
         
         Url.shorten_url(url, slug+SecureRandom.uuid[0..2], request_url)
     end
@@ -47,19 +47,36 @@ class Url < ApplicationRecord
         begin            
             url = Url.find(id)
             if url
-                data = {}
-                url.attributes.each do |attr, value|
-                    key = attr.to_s
-                    if key == "click_timestamp" or key == "origin"
-                        data[key] = JSON.parse(value)
-                    else
-                        data[key] = value
-                    end
-                end
+                data = self.process_data(url)
                 return data
             end
         rescue ActiveRecord::RecordNotFound
             return nil
         end
+    end
+
+    def self.all_urls_report
+        urls = Url.all()
+        data = []
+        urls.each do |url|
+            processed_data = process_data(url)
+            data.append(processed_data)
+        end
+        return data
+    end
+
+    private
+
+    def self.process_data(url)
+        data = {}
+        url.attributes.each do |attr, value|
+            key = attr.to_s
+            if key == "click_timestamp" or key == "origin"
+                data[key] = JSON.parse(value)
+            else
+                data[key] = value
+            end
+        end
+        return data
     end
 end
