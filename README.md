@@ -76,7 +76,7 @@ This is the URL Shortener API, offering these endpoints:
 
      The ABSTRACT_API_KEY is created by signing up Abstract's Geolocation API (no need input any cards, just sign up [here](https://www.abstractapi.com/api/ip-geolocation-api) and you get the key)
 
-4. If you're using a Docker database, run `docker-compose up`:
+4. If you're using a Docker database, run `docker-compose up` and change the ports on `database.yml` to 5434. Else, remove the port number.
 
 5. Run `rails db:create db:migrate`
 
