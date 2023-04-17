@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:4000'
+    origins ["http://localhost:4000", "https://url-shortener-ui.vercel.app/"]
     #TODO ADD THE UI DOMAIN WHEN THEY'RE MAKING REQUESTS
 
     resource '*',
