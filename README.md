@@ -74,7 +74,7 @@ This is the URL Shortener API, offering these endpoints:
    - ABSTRACT_API_KEY: YOUR_ABSTRACT_API_KEY
    - HOST_URL: http://localhost:3000
 
-     The ABSTRACT_API_KEY is created by signing up Abstract's Geolocation API (no need input any cards, just sign up and you get the key)
+     The ABSTRACT_API_KEY is created by signing up Abstract's Geolocation API (no need input any cards, just sign up [here](https://www.abstractapi.com/api/ip-geolocation-api) and you get the key)
 
 4. If you're using a Docker database (through running `docker-compose up`), comment the username like this on `database.yml`:
    ```yml
