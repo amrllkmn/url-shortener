@@ -1,5 +1,7 @@
 class UrlsController < ApplicationController
-    before_action :validate_url, only: [:shorten]
+    require 'nokogiri'
+    require 'open-uri'
+    before_action :validate_url, :get_url_title, only: [:shorten]
     def index
         render json: {"message": "Hello World!"}, status: :ok
     end
@@ -7,11 +9,11 @@ class UrlsController < ApplicationController
     def shorten
         @url = params[:url]
         @slug = params[:slug]
-        @created_url = Url.shorten_url(@url, @slug)
+        @created_url = Url.shorten_url(@url, @slug, @title)
         if @created_url.nil?
             render json: {"message": "Something went wrong"}, status: :internal_server_error and return
         end
-        render json: {"message": "Created", "short_url": @created_url}, status: :created and return
+        render json: {"message": "Created", "short_url": @created_url, "target_url": @url, "title": @title}, status: :created and return
     end
 
     def show
@@ -58,6 +60,13 @@ class UrlsController < ApplicationController
             resp["message"] = "url invalid, must be provided with https://"
         end
         render json: resp, status: :unprocessable_entity if !resp["message"].nil?
+    end
+
+    def get_url_title
+        url = params[:url]
+        doc = Nokogiri::HTML(URI.open(url)).at_css('title')
+        @title = doc.text if !doc.nil?
+        return @title
     end
     
 end
