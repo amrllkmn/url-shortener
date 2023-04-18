@@ -73,11 +73,21 @@ This is the URL Shortener API, offering these endpoints:
    - DB_PASSWORD: YOUR_PASSWORD
    - ABSTRACT_API_KEY: YOUR_ABSTRACT_API_KEY
    - HOST_URL: http://localhost:3000
+   - DB_HOST: localhost
+   - DB_PORT: 5434 (5432 if you're not using the docker-compose.yml file provided)
 
      The ABSTRACT_API_KEY is created by signing up Abstract's Geolocation API (no need input any cards, just sign up [here](https://www.abstractapi.com/api/ip-geolocation-api) and you get the key)
 
-4. If you're using a Docker database, run `docker-compose up` and change the ports on `database.yml` to 5434. Else, remove the port number.
+4. If there's no `database.yml` created, just use `database_sample.yml`, rename it to `database.yml`.
 
-5. Run `rails db:create db:migrate`
+5. If you're using a Docker database, run `docker-compose up`. If not, can skip this step.
 
-6. Run `rails s`
+6. Run `rails db:create db:migrate`
+
+7. Run `rails s`
+
+### Deployment
+
+I used [Render](https://render.com) to deploy my application. It provided me with the [documentation](https://render.com/docs/deploy-rails) needed to configure a PostgreSQL database with a Rails app before deployment.
+
+The client-side application is hosted on Vercel and its repo can be accessed [here](https://github.com/amrllkmn/url-shortener-ui).

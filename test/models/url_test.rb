@@ -29,7 +29,7 @@ class UrlTest < ActiveSupport::TestCase
 
 
   test "shorten_url should return a string url" do
-    url = Url.shorten_url("https://google.com")
+    url = Url.shorten_url("https://google.com", "", nil)
     assert_not_empty url
   end
 

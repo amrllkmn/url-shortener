@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_13_033149) do
+ActiveRecord::Schema.define(version: 2023_04_18_021809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2023_04_13_033149) do
     t.integer "times_clicked", default: 0
     t.string "click_timestamp", default: "{}"
     t.string "origin", default: "[]"
+    t.string "title", default: ""
   end
 
 end
