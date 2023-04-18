@@ -16,7 +16,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   end
 
   allow do
-    origins 'https://url-shortener-ui.vercel.app/'
+    origins 'https://url-shortener-ui.vercel.app'
 
     #TODO ADD THE UI DOMAIN WHEN THEY'RE MAKING REQUESTS
 
